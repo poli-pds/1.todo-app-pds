@@ -7,6 +7,7 @@ import co.com.poli.pdstodo.persistence.repository.TaskRepository;
 import co.com.poli.pdstodo.services.dto.TaskInDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,6 +32,11 @@ public class TaskService {
 
     public List<Task> findAll(){
         return this.taskRepository.findAll();
+    }
+
+    @Transactional
+    public void markTaskAsFinished(Long id){
+        this.taskRepository.markTaskAsFinished(id);
     }
 
 }
