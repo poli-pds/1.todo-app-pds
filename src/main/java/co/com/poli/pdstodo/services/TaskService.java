@@ -7,9 +7,10 @@ import co.com.poli.pdstodo.persistence.repository.TaskRepository;
 import co.com.poli.pdstodo.services.dto.TaskInDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -35,8 +36,23 @@ public class TaskService {
     }
 
     @Transactional
-    public void markTaskAsFinished(Long id){
+    public Task markTaskAsFinished(Long id){
+        Optional<Task> task = this.taskRepository.findById(id);
+        if(task.isEmpty()){
+            return null;
+        }
         this.taskRepository.markTaskAsFinished(id);
+        return task.orElse(null);
+    }
+
+    @Transactional
+    public Task deleteTaskById(Long id){
+        Optional<Task> task = this.taskRepository.findById(id);
+        if(task.isEmpty()){
+            return null;
+        }
+        this.taskRepository.deleteById(id);
+        return task.orElse(null);
     }
 
 }
